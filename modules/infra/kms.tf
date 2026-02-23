@@ -85,6 +85,11 @@ locals {
   provided_key   = var.kms.key_id != null ? 1 : 0
 }
 
+resource "aws_iam_service_linked_role" "autoscaling" {
+  count            = var.create_autoscaling_service_linked_role ? 1 : 0
+  aws_service_name = "autoscaling.amazonaws.com"
+}
+
 resource "aws_kms_key" "domino" {
   count                    = local.create_kms_key
   description              = "KMS key to secure data for Domino"
@@ -97,6 +102,8 @@ resource "aws_kms_key" "domino" {
   tags = {
     "Name" = var.deploy_id
   }
+
+  depends_on = [aws_iam_service_linked_role.autoscaling]
 }
 
 resource "aws_kms_alias" "domino" {

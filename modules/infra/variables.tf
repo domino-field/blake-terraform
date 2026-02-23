@@ -568,6 +568,12 @@ variable "storage" {
   default = {}
 }
 
+variable "create_autoscaling_service_linked_role" {
+  description = "Determines whether to create the AWSServiceRoleForAutoScaling service-linked role. Set to false if the role already exists in the AWS account."
+  type        = bool
+  default     = true
+}
+
 variable "kms" {
   description = <<EOF
     enabled             = "Toggle, if set use either the specified KMS key_id or a Domino-generated one"
